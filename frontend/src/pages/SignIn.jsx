@@ -1,23 +1,31 @@
 import React, { useState } from "react";
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const SignIn = () => {
-    const [formData, setFormData] = useState({
+    const [userData, setUserData] = useState({
         email: "",
         password: "",
     });
 
     const handleChange = (e) => {
-        setFormData((prev) => ({
+        setUserData((prev) => ({
             ...prev,
             [e.target.name]: e.target.value,
-        }));
+        }));    //  When typing/fill input field at that time userData value is set i.e. name,email,mobile,password
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         // Sign in logic (API call or validation)
-        console.log("Logging in with", formData);
+        console.log("Logging in with", userData);
+        axios.post('/api/user/login') //  when not using proxy http://localhost:4000/api/register
+        .then((res) => {
+            console.log(res.data);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
     };
 
     return (
@@ -37,7 +45,7 @@ const SignIn = () => {
                             id="email"
                             name="email"
                             required
-                            value={formData.email}
+                            value={userData.email}
                             onChange={handleChange}
                             className="mt-1 w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
@@ -52,7 +60,7 @@ const SignIn = () => {
                             id="password"
                             name="password"
                             required
-                            value={formData.password}
+                            value={userData.password}
                             onChange={handleChange}
                             className="mt-1 w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />

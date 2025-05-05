@@ -1,0 +1,39 @@
+const express = require('express');
+const app = express();
+// var cors = require('cors')
+
+require('dotenv').config()
+
+// app.use(cors());     //  If not using cors() then proxy
+
+const dummyData = [
+    {
+        name: "Prasanta",
+        city: "Bankura",
+        state: "West Bengal"
+    },
+    {
+        name: "Shubhanjali",
+        city: "Rewa",
+        state: "Madhya Pradesh"
+    },
+    {
+        name: "Aryan",
+        city: "Prayagraj",
+        state: "Uttar Pradesh"
+    }
+];
+
+app.get("/api/register", (req, res) => {
+    res.json(dummyData);
+})
+
+app.listen(process.env.PORT, () => {
+    console.log(`I am listining at PORT: ${process.env.PORT}`);
+})
+
+Mobile Validation:
+// Mobile number 
+    // if(userMob.length !== 10  ||  isNaN(userMob)){
+    //     return res.status(400).json({ error: "Invalid mobile number." });
+    // }

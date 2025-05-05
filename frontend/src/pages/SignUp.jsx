@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from 'react-router-dom';
+import axios from "axios";
 
 const SignUp = () => {
     const [userData, setuserData] = useState({
@@ -20,6 +21,13 @@ const SignUp = () => {
         e.preventDefault();
         // Submit logic here (API call or validation)
         console.log("Form Submitted", userData);
+        axios.post('/api/user/register', userData) //  when not using proxy http://localhost:4000/api/register
+        .then((res) => {
+            console.log(res.data);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
     };
 
     return (

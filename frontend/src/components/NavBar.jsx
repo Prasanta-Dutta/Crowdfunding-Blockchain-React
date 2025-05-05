@@ -56,6 +56,29 @@ function NavBar() {
                             </ul>
                         )
                     }
+
+                    {
+                        isLoggedIn && (
+                            <ul className="flex items-center space-x-8 lg:flex ">
+                                <li>
+                                    <Link
+                                        to="/logout"
+                                        className="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-deep-purple-accent-500 hover:bg-deep-purple-accent-700 focus:shadow-outline focus:outline-none background"
+                                    >
+                                        Logout
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        to="/profile"
+                                        className="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-deep-purple-accent-500 hover:bg-deep-purple-accent-700 focus:shadow-outline focus:outline-none background"
+                                    >
+                                        Profile
+                                    </Link>
+                                </li>
+                            </ul>
+                        )
+                    }
                 </div>
 
 

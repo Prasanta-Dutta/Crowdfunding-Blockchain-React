@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const SignUp = () => {
     const [userData, setuserData] = useState({
@@ -9,6 +11,8 @@ const SignUp = () => {
         mobile: "",
         password: "",
     });
+
+    const navigatePage = useNavigate();
 
     const handleChange = (e) => {
         setuserData((prev) => ({
@@ -22,12 +26,23 @@ const SignUp = () => {
         // Submit logic here (API call or validation)
         console.log("Form Submitted", userData);
         axios.post('/api/user/register', userData) //  when not using proxy http://localhost:4000/api/register
-        .then((res) => {
-            console.log(res.data);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+            .then((res) => {
+                console.log(res.data);
+                if (res.status === 201) {
+                    toast.success('Registration successful!', {
+                        position: 'top-center',
+                        autoClose: 3000,
+                    });
+                    setTimeout(() => navigatePage('/signin'), 2000);
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+                toast.error(`❌ ${err.message}`, {
+                    position: 'top-center',
+                    autoClose: 3000,
+                });
+            });
     };
 
     return (

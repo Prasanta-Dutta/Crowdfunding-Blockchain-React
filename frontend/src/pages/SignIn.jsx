@@ -1,12 +1,17 @@
-import React, { useState } from "react";
-import { Link } from 'react-router-dom';
+import React, { useState, useContext } from "react";
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import LogInContext from '../context/LogInContext';
+import { toast } from 'react-toastify';
 
 const SignIn = () => {
     const [userData, setUserData] = useState({
         email: "",
         password: "",
     });
+
+    const navigatePage = useNavigate();
+    const logInStatus = useContext(LogInContext);
 
     const handleChange = (e) => {
         setUserData((prev) => ({
@@ -19,12 +24,24 @@ const SignIn = () => {
         e.preventDefault();
         // Sign in logic (API call or validation)
         console.log("Logging in with", userData);
-        axios.post('/api/user/login') //  when not using proxy http://localhost:4000/api/register
+        axios.post('/api/user/login', userData, { withCredentials: true }) //  when not using proxy http://localhost:4000/api/register
         .then((res) => {
             console.log(res.data);
+            if (res.status === 200) {
+                logInStatus.setIsLoggedIn(true);
+                toast.success('Login successful!', {
+                    position: 'top-center',
+                    autoClose: 3000,
+                });
+                setTimeout(() => navigatePage('/story'), 1000);
+            }
         })
         .catch((err) => {
             console.log(err);
+            toast.error(`❌ ${err.message}`, {
+                position: 'top-center',
+                autoClose: 3000,
+            });
         });
     };
 

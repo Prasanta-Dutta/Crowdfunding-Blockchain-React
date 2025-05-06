@@ -1,19 +1,54 @@
 "use client";
 import React, { useState, useContext } from 'react';
-import { Link } from 'react-router-dom';
-import Logo from './Logo';
+import { Link, useNavigate } from 'react-router-dom';
+import { Logo, MetamaskLogo }   from './index';
 import Menu from './Menu';
 import Close from './Close';
+import LogInContext from '../context/LogInContext';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+
 
 function NavBar() {
     const menuList = ["News", "Explore Campaigns", "Start Campaign", "Story"];
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const logInStatus = useContext(LogInContext);
     const paths = ["/news", "/explore-campaigns", "/start-campaign", "/story"];
+
+    const navigatePage = useNavigate();
 
     const changeCloseBtn = () => {
         setIsMenuOpen(false);
         document.getElementById('menu_btn').classList.remove('hidden');
+    }
+
+    const handleLogout = (e) => {
+        console.log("Logged Out");
+        axios.post('/api/user/logout', {}, { withCredentials: true }) //  when not using proxy http://localhost:4000/api/register
+        .then((res) => {
+            console.log(res.data);
+            if (res.status === 500) {
+                toast.error('Logout failed', {
+                    position: 'top-center',
+                    autoClose: 3000,
+                });
+            }
+            else{
+                toast.success('Logged out', {
+                    position: 'top-center',
+                    autoClose: 3000,
+                });
+            }
+            logInStatus.setIsLoggedIn(false);
+            setTimeout(() => navigatePage('/signin'), 1000);
+        })
+        .catch((err) => {
+            console.log(err);
+            toast.error(`❌ ${err.message}`, {
+                position: 'top-center',
+                autoClose: 3000,
+            });
+        });
     }
 
     return (
@@ -43,14 +78,14 @@ function NavBar() {
                         </ul>
                     </div>
                     {
-                        !isLoggedIn && (
+                        !logInStatus.isLoggedIn && (
                             <ul className="flex items-center space-x-8 lg:flex ">
                                 <li>
                                     <Link
                                         to="/signup"
-                                        className="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-deep-purple-accent-500 hover:bg-deep-purple-accent-700 focus:shadow-outline focus:outline-none background"
+                                        className="inline-flex items-center justify-center h-12 px-6 font-semibold tracking-wide transition duration-200 rounded shadow-md bg-deep-purple-accent-500 hover:text-teal-200 focus:shadow-outline  background  dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700  text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100"
                                     >
-                                        Sign up
+                                        Sign Up
                                     </Link>
                                 </li>
                             </ul>
@@ -58,23 +93,32 @@ function NavBar() {
                     }
 
                     {
-                        isLoggedIn && (
+                        logInStatus.isLoggedIn && (
                             <ul className="flex items-center space-x-8 lg:flex ">
                                 <li>
-                                    <Link
-                                        to="/logout"
-                                        className="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-deep-purple-accent-500 hover:bg-deep-purple-accent-700 focus:shadow-outline focus:outline-none background"
+                                <button
+                                        className="h-12 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:text-teal-200 focus:ring-4 focus:ring-gray-100 font-semibold rounded shadow-md text-sm px-6 py-2.5 me-2.5 my-auto dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+                                        onClick={handleLogout}
                                     >
                                         Logout
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link
-                                        to="/profile"
-                                        className="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-deep-purple-accent-500 hover:bg-deep-purple-accent-700 focus:shadow-outline focus:outline-none background"
+                                    </button>
+                                
+                                
+                                    <button
+                                        className="h-12 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:text-teal-200 focus:ring-4 focus:ring-gray-100 font-semibold rounded shadow-md text-sm px-6 py-2.5 me-2.5 my-auto dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+                                        // onClick={handleProfile}
                                     >
                                         Profile
-                                    </Link>
+                                    </button>
+                                
+                                
+                                    <button  
+                                        class="h-12 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:text-teal-200 focus:ring-4 focus:ring-gray-100 font-semibold rounded shadow-md text-sm px-6 py-2.5 me-2.5 my-auto dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700 text-center inline-flex "
+                                        // onClick={connectWallet}
+                                    > 
+                                        <MetamaskLogo />
+                                        Connect
+                                    </button>
                                 </li>
                             </ul>
                         )

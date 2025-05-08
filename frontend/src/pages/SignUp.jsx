@@ -33,7 +33,7 @@ const SignUp = () => {
                         position: 'top-center',
                         autoClose: 3000,
                     });
-                    setTimeout(() => navigatePage('/signin'), 2000);
+                    setTimeout(() => navigatePage('/signin'), 1000);
                 }
             })
             .catch((err) => {
@@ -46,88 +46,104 @@ const SignUp = () => {
     };
 
     return (
-        <div className="bg-gray-100 flex items-center justify-center min-h-screen">
-            <div className="bg-white shadow-lg rounded-2xl w-full max-w-md p-8">
-                <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
-                    Sign Up
-                </h2>
+        <div className="min-h-screen bg-gradient-to-r from-teal-50 to-emerald-100 flex items-center justify-center px-4">
+            <div className="relative bg-white shadow-2xl rounded-2xl w-full max-w-5xl flex flex-col md:flex-row overflow-hidden">
 
-                <form onSubmit={handleSubmit} className="space-y-5">
-                    <div>
-                        <label htmlFor="name" className="block text-lg text-pretty font-medium text-gray-700">
-                            Name
-                        </label>
-                        <input
-                            type="text"
-                            name="name"
-                            id="name"
-                            required
-                            value={userData.name}
-                            onChange={handleChange}
-                            className="mt-1 w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                    </div>
+                {/* Close Button */}
+                <button
+                    type="button"
+                    aria-label="Close"
+                    onClick={() => navigatePage("/")}
+                    className="absolute top-4 left-4 bg-emerald-500 shadow-lg shadow-white text-white font-semibold hover:text-white hover:bg-emerald-700 p-2 rounded-full transition"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
 
-                    <div>
-                        <label htmlFor="email" className="block text-lg text-pretty font-medium text-gray-700">
-                            Email
-                        </label>
-                        <input
-                            type="email"
-                            name="email"
-                            id="email"
-                            required
-                            value={userData.email}
-                            onChange={handleChange}
-                            className="mt-1 w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                    </div>
+                {/* Left Form Section */}
+                <div className="w-full md:w-1/2 p-8">
+                    <div className="text-3xl font-bold text-center text-emerald-600 mb-6">Sign Up</div>
+                    <form onSubmit={handleSubmit} className="space-y-5">
+                        <div>
+                            <label htmlFor="name" className="block font-medium text-gray-700">
+                                Full Name
+                            </label>
+                            <input
+                                type="text"
+                                name="name"
+                                id="name"
+                                value={userData.name}
+                                onChange={handleChange}
+                                required
+                                className="w-full mt-1 p-3 border border-emerald-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="email" className="block font-medium text-gray-700">
+                                Email Address
+                            </label>
+                            <input
+                                type="email"
+                                name="email"
+                                id="email"
+                                value={userData.email}
+                                onChange={handleChange}
+                                required
+                                className="w-full mt-1 p-3 border border-emerald-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="mobile" className="block font-medium text-gray-700">
+                                Mobile
+                            </label>
+                            <input
+                                type="tel"
+                                name="mobile"
+                                id="mobile"
+                                value={userData.mobile}
+                                onChange={handleChange}
+                                pattern="[0-9]{10}"
+                                required
+                                className="w-full mt-1 p-3 border border-emerald-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="password" className="block font-medium text-gray-700">
+                                Password
+                            </label>
+                            <input
+                                type="password"
+                                name="password"
+                                id="password"
+                                value={userData.password}
+                                onChange={handleChange}
+                                required
+                                className="w-full mt-1 p-3 border border-emerald-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                            />
+                        </div>
+                        <button
+                            type="submit"
+                            className="w-full bg-emerald-600 text-white p-3 rounded-lg hover:bg-emerald-700 transition"
+                        >
+                            Register
+                        </button>
+                    </form>
+                </div>
 
-                    <div>
-                        <label htmlFor="mobile" className="block text-lg text-pretty font-medium text-gray-700">
-                            Mobile
-                        </label>
-                        <input
-                            type="tel"
-                            name="mobile"
-                            id="mobile"
-                            required
-                            pattern="[0-9]{10}"
-                            value={userData.mobile}
-                            onChange={handleChange}
-                            className="mt-1 w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                    </div>
-
-                    <div>
-                        <label htmlFor="password" className="block text-lg text-pretty font-medium text-gray-700">
-                            Password
-                        </label>
-                        <input
-                            type="password"
-                            name="password"
-                            id="password"
-                            required
-                            value={userData.password}
-                            onChange={handleChange}
-                            className="mt-1 w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                    </div>
-
-                    <button
-                        type="submit"
-                        className="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition"
-                    >
-                        Register
-                    </button>
-                </form>
-
-                <p className="mt-4 text-center text-lg text-pretty text-gray-600">
-                    Already have an account?{" "}
-                    <Link to="/signin" className="link">
-                        Sign In
+                {/* Right Section */}
+                <div className="hidden md:flex md:w-1/2 bg-emerald-600 text-white flex-col items-center justify-center p-8">
+                    <h1 className="text-3xl font-bold mb-4">Gather & Grow</h1>
+                    <blockquote className="italic text-center mb-6">
+                        "A better tomorrow starts with your pledge today."
+                    </blockquote>
+                    <p className="text-lg">Already have an account?</p>
+                    <Link to="/signin">
+                        <button className="mt-3 bg-white text-emerald-600 font-semibold py-2 px-6 rounded hover:bg-emerald-100">
+                            Sign In
+                        </button>
                     </Link>
-                </p>
+                </div>
             </div>
         </div>
     );

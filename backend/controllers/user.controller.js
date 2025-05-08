@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { User } from '../models/user.model.js';
+import { aadharTable } from '../models/aadhar.model.js';
 import validator from 'validator';
 
 const registerUser = async (req, res) => {
@@ -105,7 +106,8 @@ const loginUser = async (req, res) => {
                         userName: existedUser.userName,
                         userEmail: existedUser.userEmail,
                         userMob: existedUser.userMob
-                    }
+                    },
+                    verificationStatus: existedUser.verificationStatus ?? false
                 });
         }
     }
@@ -132,4 +134,49 @@ const checkSession = async (req, res) => {
     }
 };
 
-export { registerUser, loginUser, logoutUser, checkSession };
+const verifyUser = async (req, res) => {
+    try {
+        let{aadharNumber, mobile} = req.body;
+
+        aadharNumber = aadharNumber.trim();
+        
+        if (!/^[2-9][0-9]{11}$/.test(aadharNumber)) {
+            return res.status(400).json(
+                { 
+                    error: "Invalid Aadhar number format",
+                    verificationStatus: false
+                }
+            );
+        }              
+
+        if (req.session.userId) {
+            const aadharHolder = await aadharTable.findOne({
+                $and: [{ aadharNumber }, { mobile }]
+            });
+
+            if(!aadharHolder){
+                return res.status(401).json(
+                    { 
+                        error: "Invalid credentials",
+                        verificationStatus: false
+                    }
+                );
+            }
+
+            const existedUser = await User.findById(req.session.userId);
+            existedUser.verificationStatus = true;
+            await existedUser.save();
+
+            return res.status(200).json({ verificationStatus: true });
+        }
+        else {
+            return res.status(401).json({ verificationStatus: false, verificationStatus: false });
+        }
+    } 
+    catch (error) {
+        console.log(`Internal server error: ${error.message}`);
+        return res.status(500).json({ error: "Something went wrong", verificationStatus: false });
+    }
+};
+
+export { registerUser, loginUser, logoutUser, checkSession, verifyUser };

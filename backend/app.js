@@ -33,6 +33,8 @@ app.use(session(
 
 // Import routes
 import userRouter from './routes/user.routes.js';
+// import aadharRoute from './routes/aadhar.route.js';
 app.use("/api/user", userRouter);
+// app.use("/api/aadhar", aadharRoute);
 
 export default app;

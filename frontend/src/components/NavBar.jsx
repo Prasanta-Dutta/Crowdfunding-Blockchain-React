@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Logo, MetamaskLogo }   from './index';
+import { Logo, MetamaskLogo } from './index';
 import Menu from './Menu';
 import Close from './Close';
 import LogInContext from '../context/LogInContext';
@@ -25,36 +25,36 @@ function NavBar() {
     const handleLogout = (e) => {
         console.log("Logged Out");
         axios.post('/api/user/logout', {}, { withCredentials: true }) //  when not using proxy http://localhost:4000/api/register
-        .then((res) => {
-            console.log(res.data);
-            if (res.status === 500) {
-                toast.error('Logout failed', {
+            .then((res) => {
+                console.log(res.data);
+                if (res.status === 500) {
+                    toast.error('Logout failed', {
+                        position: 'top-center',
+                        autoClose: 3000,
+                    });
+                }
+                else {
+                    toast.success('Logged out', {
+                        position: 'top-center',
+                        autoClose: 3000,
+                    });
+                }
+                logInStatus.setIsLoggedIn(false);
+                setTimeout(() => navigatePage('/signin'), 1000);
+            })
+            .catch((err) => {
+                console.log(err);
+                toast.error(`❌ ${err.message}`, {
                     position: 'top-center',
                     autoClose: 3000,
                 });
-            }
-            else{
-                toast.success('Logged out', {
-                    position: 'top-center',
-                    autoClose: 3000,
-                });
-            }
-            logInStatus.setIsLoggedIn(false);
-            setTimeout(() => navigatePage('/signin'), 1000);
-        })
-        .catch((err) => {
-            console.log(err);
-            toast.error(`❌ ${err.message}`, {
-                position: 'top-center',
-                autoClose: 3000,
             });
-        });
     }
 
     return (
         <div className="backgroundMain">
-            <div className="px-4 py-5 mx-autoi sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8">
-                <div className="hidden md:flex relative  items-center justify-between">
+            <div className="px-4 py-5 sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-8 lg:px-8">
+                <div className="hidden lg:flex relative  items-center justify-between">
                     <div className="flex items-center">
                         <a href="/" aria-label="Donator" title='Donator' className="inline-flex items-center mr-8">
                             <Logo color="text-white" />
@@ -96,29 +96,45 @@ function NavBar() {
                         logInStatus.isLoggedIn && (
                             <ul className="flex items-center space-x-8 lg:flex ">
                                 <li>
-                                <button
+                                    <button
                                         className="h-12 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:text-teal-200 focus:ring-4 focus:ring-gray-100 font-semibold rounded shadow-md text-sm px-6 py-2.5 me-2.5 my-auto dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
                                         onClick={handleLogout}
                                     >
                                         Logout
                                     </button>
-                                
-                                
+
+
                                     <button
                                         className="h-12 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:text-teal-200 focus:ring-4 focus:ring-gray-100 font-semibold rounded shadow-md text-sm px-6 py-2.5 me-2.5 my-auto dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
-                                        // onClick={handleProfile}
+                                    // onClick={handleProfile}
                                     >
                                         Profile
                                     </button>
-                                
-                                
-                                    <button  
-                                        class="h-12 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:text-teal-200 focus:ring-4 focus:ring-gray-100 font-semibold rounded shadow-md text-sm px-6 py-2.5 me-2.5 my-auto dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700 text-center inline-flex "
-                                        // onClick={connectWallet}
-                                    > 
+
+
+                                    <button
+                                        className="h-12 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:text-teal-200 focus:ring-4 focus:ring-gray-100 font-semibold rounded shadow-md text-sm px-6 py-2.5 me-2.5 my-auto dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700 text-center inline-flex "
+                                    // onClick={connectWallet}
+                                    >
                                         <MetamaskLogo />
                                         Connect
                                     </button>
+
+                                    {
+                                        logInStatus.isVerified ? (
+                                            <img src="verified2.png" alt="" title="Verified" className="h-12 rounded shadow-md  me-2.5 my-auto text-center inline-flex " />
+                                        )
+                                            : (
+                                                <Link to={"/verification"} >
+                                                    <button
+                                                        className="h-12 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:text-green-600 focus:ring-4 focus:ring-gray-100 font-semibold rounded shadow-md text-sm px-6 py-2.5 me-2.5 my-auto dark:bg-gray-800 dark:text-green-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+                                                    >
+                                                        Verify
+                                                    </button>
+                                                </Link>
+                                            )
+                                    }
+
                                 </li>
                             </ul>
                         )
@@ -127,7 +143,7 @@ function NavBar() {
 
 
                 {/* Responsive Design */}
-                <div className='md:hidden flex px-4 mx-autoi sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8'>
+                <div className="lg:hidden px-4 py-5 mx-auto w-full sm:max-w-xl md:max-w-full lg:px-8">
                     <button className='p-2 -mr-1 transition duration-200 rounded focus:outline-none focus:shadow-outline' aria-label='Open Menu' title='Open Menu' id='menu_btn' onClick={() => {
                         setIsMenuOpen(true);
                         document.getElementById('menu_btn').classList.add('hidden');
@@ -148,10 +164,13 @@ function NavBar() {
                                             </a>
                                         </div>
                                     </div>
-                                    <button onClick={() => {
-                                        setIsMenuOpen(false);
-                                        { document.getElementById('menu_btn').classList.remove('hidden') };
-                                    }}>
+                                    <button
+                                        onClick={() => {
+                                            setIsMenuOpen(false);
+                                            document.getElementById('menu_btn').classList.remove('hidden') ;
+                                        }}
+                                        className="absolute top-1/4 right-5 bg-slate-200 shadow-md shadow-slate-400 text-slate-800 font-semibold hover:bg-slate-300 p-2 rounded-full transition"
+                                    >
                                         <Close />
                                     </button>
                                 </div>

@@ -3,7 +3,7 @@ import axios from 'axios';
 import LogInContext from '../context/LogInContext';
 
 function CheckSession() {
-    const { setIsLoggedIn } = useContext(LogInContext);
+    const { setIsLoggedIn, setIsVerified } = useContext(LogInContext);  //  Change destructuring
 
     useEffect(() => {
         const checkAuth = async () => {
@@ -13,8 +13,10 @@ function CheckSession() {
                 });
                 if (res.data.loggedIn) {
                     setIsLoggedIn(true);
+                    // setIsVerified(true)     //  Change
                 } else {
                     setIsLoggedIn(false);
+                    // setIsVerified(false);   //  Change
                 }
             } catch (err) {
                 console.error("Session check failed:", err);
@@ -23,7 +25,7 @@ function CheckSession() {
         };
 
         checkAuth();
-    }, [setIsLoggedIn]);
+    }, [setIsLoggedIn, setIsVerified]);     //  Change
 
     return null; // No UI needed
 }

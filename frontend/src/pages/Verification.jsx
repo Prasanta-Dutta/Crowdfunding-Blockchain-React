@@ -36,7 +36,7 @@ export default function Verification() {
             })
             .catch((err) => {
                 console.log(err);
-                toast.error(`❌ ${err.message}`, {
+                toast.error(`❌ ${err.response?.data?.error || err.message}`, {
                     position: 'top-center',
                     autoClose: 3000,
                 });

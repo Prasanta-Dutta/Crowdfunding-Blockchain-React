@@ -8,19 +8,13 @@ function CheckSession() {
     useEffect(() => {
         const checkAuth = async () => {
             try {
-                const res = await axios.post('/api/user/check-session', {
-                    withCredentials: true,
-                });
-                if (res.data.loggedIn) {
-                    setIsLoggedIn(true);
-                    // setIsVerified(true)     //  Change
-                } else {
-                    setIsLoggedIn(false);
-                    // setIsVerified(false);   //  Change
-                }
+                const res = await axios.post('/api/user/check-session', { withCredentials: true });
+                setIsLoggedIn(res.data.loggedIn);
+                setIsVerified(res.data.verificationStatus)
             } catch (err) {
                 console.error("Session check failed:", err);
                 setIsLoggedIn(false);
+                setIsVerified(false);
             }
         };
 

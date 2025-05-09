@@ -7,6 +7,7 @@ import axios from 'axios';
 
 import { NavBar, Footer, Hero, Card, CheckSession } from './components/index';
 import { ExploreCampaigns, StartCampaign, News, Story, SignUp, SignIn, Verification } from './pages/index';
+import Logout from './pages/Logout';
 
 axios.defaults.withCredentials = true;
 
@@ -38,6 +39,7 @@ function App() {
           <Route path="/signup" element={!isLoggedIn ? <SignUp /> : <Navigate to={"/"} />} />
           <Route path="/signin" element={!isLoggedIn ? <SignIn /> : <Navigate to={"/"} />} />
           <Route path="/verification" element={isLoggedIn ? <Verification /> : <Navigate to={"/signin"} />} />
+          <Route path="/logout" element={<Logout />} />
         </Routes>
       </Router>
       <ToastContainer position="top-center" autoClose={2000} />

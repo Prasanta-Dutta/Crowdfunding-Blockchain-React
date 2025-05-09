@@ -97,6 +97,7 @@ const loginUser = async (req, res) => {
         }
         else {
             req.session.userId = existedUser._id;
+            req.session.verificationStatus = existedUser.verificationStatus ?? false;
             return res
                 .status(200)
                 .json({
@@ -127,10 +128,10 @@ const logoutUser = async (req, res) => {
 
 const checkSession = async (req, res) => {
     if (req.session.userId) {
-        return res.status(200).json({ loggedIn: true });
+        return res.status(200).json({ loggedIn: true, verificationStatus: req.session.verificationStatus });
     }
     else {
-        return res.status(401).json({ loggedIn: false });
+        return res.status(401).json({ loggedIn: false, verificationStatus: req.session.verificationStatus });
     }
 };
 
@@ -170,7 +171,7 @@ const verifyUser = async (req, res) => {
             return res.status(200).json({ verificationStatus: true });
         }
         else {
-            return res.status(401).json({ verificationStatus: false, verificationStatus: false });
+            return res.status(401).json({ verificationStatus: false });
         }
     } 
     catch (error) {

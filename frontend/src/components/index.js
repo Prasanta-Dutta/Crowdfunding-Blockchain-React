@@ -7,5 +7,21 @@ import PopUp from './PopUp';
 import Card from './Card';
 import CheckSession from './CheckSession';
 import MetamaskLogo from './MetamaskLogo';
+import Profile from './Profile';
+import ConnectWallet from './ConnectWallet';
+import CampaignCard from './CampaignCard';
 
-export { Footer, NavBar, Logo, Menu, Hero, PopUp, Card, CheckSession, MetamaskLogo };
+export { 
+    Footer, 
+    NavBar, 
+    Logo, 
+    Menu, 
+    Hero, 
+    PopUp, 
+    Card, 
+    CheckSession, 
+    MetamaskLogo, 
+    Profile, 
+    ConnectWallet, 
+    CampaignCard 
+};

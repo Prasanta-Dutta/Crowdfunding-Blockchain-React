@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { parseEther } from 'ethers';
+import { getCrowdFundingContract } from "../utils/connectContract";
 
 const CreateCampaign = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         title: "",
         description: "",
+        category: "",
         targetAmount: "",
         deadline: "",
     });
@@ -17,10 +20,62 @@ const CreateCampaign = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const [loading, setLoading] = useState(false);
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // TODO: Send data to backend or perform validation
-        console.log("Campaign Data:", formData);
+        setLoading(true);
+
+        const { title, description, category, targetAmount, deadline } = formData;
+
+        const deadlineTimestamp = new Date(deadline).getTime() / 1000;
+        const now = Math.floor(Date.now() / 1000);
+        const durationDays = Math.ceil((deadlineTimestamp - now) / (60 * 60 * 24));
+        // Date.now() && Date.getTime() both return the time in ms
+        // Sec/60 -> Min/60 -> Hrs/24 -> Day
+
+        // console.log(deadline)
+        // console.log(deadlineTimestamp)
+        // console.log(now)
+        // console.log(durationDays);
+        // console.log(parseEther(targetAmount));
+
+        
+        if (durationDays <= 0) {
+            alert("Deadline must be in the future!");
+            setLoading(false);
+            return;
+        }
+
+        try {
+            if (!window.ethereum) {
+                alert("Please install MetaMask to continue.");
+                return;
+            }
+
+            await window.ethereum.request({ method: "eth_requestAccounts" });
+
+            const contract = await getCrowdFundingContract();
+            const txn = await contract.createCampaign(
+                title,
+                description,
+                category, // You can add a category field in form later
+                parseEther(targetAmount), // Convert INR to ETH roughly for demo
+                durationDays
+            );
+
+            await txn.wait();
+            alert("Campaign created successfully!");
+            navigate("/"); // Redirect to homepage
+        } 
+        catch (error) {
+            console.error("Error creating campaign:", error);
+            alert("Failed to create campaign. See console for details.");
+        }
+        finally {
+            setLoading(false); // Stop loader
+        }
+        
     };
 
     return (
@@ -73,6 +128,27 @@ const CreateCampaign = () => {
                             />
                         </div>
                         <div>
+                            <label htmlFor="category" className="block font-medium text-gray-700">
+                                Category
+                            </label>
+                            <select
+                                name="category"
+                                id="category"
+                                value={formData.category}
+                                onChange={handleChange}
+                                required
+                                className="w-full mt-1 p-3 border border-emerald-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                            >
+                                <option value="" disabled>Select a category</option>
+                                <option value="education">Education</option>
+                                <option value="healthcare">Healthcare</option>
+                                <option value="environment">Environment</option>
+                                <option value="animal-welfare">Animal Welfare</option>
+                                <option value="community">Community</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div>
                             <label htmlFor="targetAmount" className="block font-medium text-gray-700">
                                 Target Amount (INR)
                             </label>
@@ -80,7 +156,7 @@ const CreateCampaign = () => {
                                 type="number"
                                 name="targetAmount"
                                 id="targetAmount"
-                                min="1"
+                                
                                 value={formData.targetAmount}
                                 onChange={handleChange}
                                 required
@@ -104,8 +180,9 @@ const CreateCampaign = () => {
                         <button
                             type="submit"
                             className="w-full bg-emerald-600 text-white p-3 rounded-lg hover:bg-emerald-700 transition"
+                            disabled={loading}
                         >
-                            Create Campaign
+                            {loading ? "Creating..." : "Create Campaign"}
                         </button>
                     </form>
                 </div>

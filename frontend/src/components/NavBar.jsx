@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { Logo, MetamaskLogo } from './index';
+import { ConnectWallet, Logo, MetamaskLogo } from './index';
 import Menu from './Menu';
 import Close from './Close';
 import LogInContext from '../context/LogInContext';
@@ -81,14 +81,14 @@ function NavBar() {
                                         Profile
                                     </button>
 
-
-                                    <button
+                                    {/* <button
                                         className="h-12 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:text-teal-200 focus:ring-4 focus:ring-gray-100 font-semibold rounded shadow-md text-sm px-6 py-2.5 me-2.5 my-auto dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700 text-center inline-flex "
                                     // onClick={connectWallet}
                                     >
                                         <MetamaskLogo />
                                         Connect
-                                    </button>
+                                    </button> */}
+                                    <ConnectWallet />
 
                                     {
                                         logInStatus.isVerified ? (

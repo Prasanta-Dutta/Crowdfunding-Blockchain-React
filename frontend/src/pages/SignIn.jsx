@@ -34,7 +34,8 @@ const SignIn = () => {
                         position: 'top-center',
                         autoClose: 3000,
                     });
-                    setTimeout(() => navigatePage('/'), 1000);
+                    setTimeout(() => navigatePage('/news'), 1000);
+                    navigatePage('/news');
                 }
             })
             .catch((err) => {

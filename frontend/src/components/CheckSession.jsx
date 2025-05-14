@@ -19,7 +19,7 @@ function CheckSession() {
         };
 
         checkAuth();
-    }, [setIsLoggedIn, setIsVerified]);     //  Change
+    }, []);     //  Change
 
     return null; // No UI needed
 }

@@ -3,6 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { parseEther } from 'ethers';
 import { getCrowdFundingContract } from "../utils/connectContract";
 
+// import axios from "axios";
+// import * as pdfjsLib from "pdfjs-dist/build/pdf";
+// import pdfWorker from "pdfjs-dist/build/pdf.worker.entry";
+
 const CreateCampaign = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({

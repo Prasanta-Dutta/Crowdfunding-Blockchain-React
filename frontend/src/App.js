@@ -6,7 +6,7 @@ import LogInContext from './context/LogInContext';
 import axios from 'axios';
 
 import { NavBar, Footer, Hero, Card, CheckSession } from './components/index';
-import { ExploreCampaigns, StartCampaign, News, Story, SignUp, SignIn, Verification } from './pages/index';
+import { ExploreCampaigns, StartCampaign, News, Story, SignUp, SignIn, Verification, CreateCampaign } from './pages/index';
 import Logout from './pages/Logout';
 
 axios.defaults.withCredentials = true;
@@ -34,7 +34,7 @@ function App() {
           />
           <Route path='/news' element={<News />} />
           <Route path="/explore-campaigns" element={<ExploreCampaigns />} />
-          <Route path="/start-campaign" element={ !isLoggedIn ? <Navigate to={"/signin"} /> : !isVerified ? <Navigate to="/verification" /> : <StartCampaign /> } />
+          <Route path="/start-campaign" element={ !isLoggedIn ? <Navigate to={"/signin"} /> : !isVerified ? <Navigate to="/verification" /> : <CreateCampaign /> } />
           <Route path="/story" element={<Story />} />
           <Route path="/signup" element={!isLoggedIn ? <SignUp /> : <Navigate to={"/"} />} />
           <Route path="/signin" element={!isLoggedIn ? <SignIn /> : <Navigate to={"/"} />} /> {/*Bcs of this after login go to "/"*/}

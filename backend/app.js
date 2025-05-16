@@ -32,9 +32,14 @@ app.use(session(
 ));
 
 // Import routes
-import userRouter from './routes/user.routes.js';
 // import aadharRoute from './routes/aadhar.route.js';
-app.use("/api/user", userRouter);
+import userRouter from './routes/user.routes.js';
+import keywordRouter from './routes/keyword.route.js';
+
+
 // app.use("/api/aadhar", aadharRoute);
+app.use("/api/user", userRouter);
+app.use("/api/keyword", keywordRouter);
+
 
 export default app;

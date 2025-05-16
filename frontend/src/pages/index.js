@@ -5,6 +5,7 @@ import Story from './Story';
 import SignUp from './SignUp';
 import SignIn from './SignIn';
 import Verification from './Verification';
+import CreateCampaign from './CreateCampaign';
 
 export { 
     ExploreCampaigns, 
@@ -13,5 +14,6 @@ export {
     Story,
     SignUp,
     SignIn,
-    Verification
+    Verification,
+    CreateCampaign
 };

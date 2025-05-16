@@ -1,7 +1,7 @@
 import { MetamaskLogo } from './index';
 import { toast } from 'react-toastify';
 
-const ConnectWallet = ({ setAccount }) => {
+const ConnectWallet = () => {
     const handleConnectWallet = async () => {
         try {
             if (!window.ethereum) {
@@ -10,7 +10,6 @@ const ConnectWallet = ({ setAccount }) => {
 
             const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
             console.log("Connected accounts:", accounts);
-            setAccount(accounts[0]);
         }
         catch (error) {
             console.error("Wallet connection error:", error);

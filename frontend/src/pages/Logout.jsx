@@ -27,6 +27,7 @@ const Logout = () => {
         else {
             // Already logged out (e.g., due to refresh)
             navigatePage('/signin');
+            return;
         }
     }, []);    
 

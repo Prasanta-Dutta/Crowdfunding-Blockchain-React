@@ -37,7 +37,7 @@ function App() {
           <Route path="/start-campaign" element={ !isLoggedIn ? <Navigate to={"/signin"} /> : !isVerified ? <Navigate to="/verification" /> : <StartCampaign /> } />
           <Route path="/story" element={<Story />} />
           <Route path="/signup" element={!isLoggedIn ? <SignUp /> : <Navigate to={"/"} />} />
-          <Route path="/signin" element={!isLoggedIn ? <SignIn /> : <Navigate to={"/"} />} />
+          <Route path="/signin" element={!isLoggedIn ? <SignIn /> : <Navigate to={"/"} />} /> {/*Bcs of this after login go to "/"*/}
           <Route path="/verification" element={isLoggedIn ? <Verification /> : <Navigate to={"/signin"} />} />
           <Route path="/logout" element={<Logout />} />
         </Routes>

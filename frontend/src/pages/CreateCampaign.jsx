@@ -76,8 +76,29 @@ const CreateCampaign = () => {
     }
   };
 
-  const handleChange = (e) =>
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  // const handleChange = (e) =>
+  //   setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+
+  const handleChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const saveCampaignToDB = async (campaignData) => {
+    try {
+      const walletAddress = (await window.ethereum.request({ method: 'eth_accounts' }))[0];
+
+      const res = await axios.post("/api/campaign/create-campaign", campaignData, { withCredentials: true } );
+      console.log("✅ Campaign saved to DB:", res.data);
+      return res.data;
+    } 
+    catch (error) {
+      console.error("❌ Error saving campaign to DB:", error);
+      throw new Error("Failed to save campaign to database.");
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -128,11 +149,10 @@ const CreateCampaign = () => {
 
       const campaignData = {
         ...formData,
-        type: campaignType,
-        keywordsMatched: matchedKeywords,
+        type: campaignType
       };
-      // const response = await axios.post("/api/keyword/match-keywords", campaignData, { withCredentials: true });
-      // console.log("✅ Campaign saved to backend:", response.data);
+      
+      await saveCampaignToDB(campaignData);
 
       alert("Campaign created successfully!");
       navigate("/");

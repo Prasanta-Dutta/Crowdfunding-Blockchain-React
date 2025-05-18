@@ -4,21 +4,28 @@ import { useNavigate } from "react-router-dom";
 const Profile = ({ username = "Profile" }) => {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
-    const navigate = useNavigate();
+    const navigatePage = useNavigate();
 
     const toggleDropdown = () => setIsOpen(!isOpen);
 
     const handleLogout = () => {
-        navigate("/logout"); 
+        navigatePage("/logout"); 
         return;
     };
 
     const handleMyCampaign = () => {
+        navigatePage("/my-campaign"); 
+        return;
+    }
 
+    const handleMyDonation = () => {
+        navigatePage("/my-donation"); 
+        return;
     }
 
     const handleProfile = () => {
-        
+        navigatePage("/edit-profile"); 
+        return;
     }
 
     // Close dropdown on outside click
@@ -56,6 +63,12 @@ const Profile = ({ username = "Profile" }) => {
                         className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-emerald-50"
                     >
                         My Campaigns
+                    </button>
+                    <button
+                        onClick={handleMyDonation}
+                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-emerald-50"
+                    >
+                        My Donation
                     </button>
                     <button
                         onClick={handleLogout}

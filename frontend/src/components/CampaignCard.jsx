@@ -5,21 +5,35 @@ import { getCrowdFundingContract } from "../utils/connectContract";
 import { parseEther } from "ethers";
 import LogInContext from "../context/LogInContext";
 import { toast } from 'react-toastify';
+import axios from "axios";
 
 let image = "https://images.pexels.com/photos/932638/pexels-photo-932638.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260";
 
 function CampaignCard({ campaign, formatEther, campaignIndex, refreshCampaigns }) {
     const [donationAmount, setDonationAmount] = useState("");
     const [isDonating, setIsDonating] = useState(false);
-    const {isLoggedIn, isVerified} = useContext(LogInContext);
+    const { isLoggedIn, isVerified } = useContext(LogInContext);
     const navigatePage = useNavigate();
 
+
+    const saveDonationToDB = async (campaignData) => {
+        try {
+            const res = await axios.post("/api/campaign/donate-campaign", campaignData, { withCredentials: true } );
+            console.log("✅ Campaign saved to DB:", res.data);
+            return res.data;
+        }
+        catch (error) {
+            console.error("❌ Error saving campaign to DB:", error);
+            throw new Error("Failed to save campaign to database.");
+        }
+    }
+
     const handleDonate = async () => {
-        if(! isLoggedIn){
+        if (!isLoggedIn) {
             navigatePage('/signin');
             return;
         }
-        if(! isVerified){
+        if (!isVerified) {
             navigatePage('/verification');
             return;
         }
@@ -43,16 +57,28 @@ function CampaignCard({ campaign, formatEther, campaignIndex, refreshCampaigns }
             toast.dismiss(); // remove loading toast
             toast.success("🎉 Donation successful!");
 
-            
+
             // 🔁 Refresh campaign data
             if (refreshCampaigns) {
                 refreshCampaigns();
             }
-        } catch (error) {
+
+            const campaignData = {
+                title: campaign.title,
+                description: campaign.description,
+                donateAmount: donationAmount,
+                deadline: campaign.deadlineTimestamp,
+                type: campaign.category,
+            };
+
+            await saveDonationToDB(campaignData);
+        }
+        catch (error) {
             console.error("Donation failed:", error);
             toast.dismiss();
             toast.error("❌ Transaction failed: " + (error.reason || error.message));
-        } finally {
+        }
+        finally {
             setDonationAmount("");  // reset input field to ""
             setIsDonating(false);
         }

@@ -236,6 +236,7 @@ const ExploreCampaigns = () => {
 
             for (let i = 0; i < totalCampaigns; i++) {
                 const campaign = await contract.getCampaign(i);
+                await new Promise(resolve => setTimeout(resolve, 100)); // throttle
                 const now = Math.floor(Date.now() / 1000);
                 const durationDays = Math.ceil((Number(campaign[6]) - now) / (60 * 60 * 24));
 
@@ -245,8 +246,9 @@ const ExploreCampaigns = () => {
                     category: campaign[2],
                     targetAmount: campaign[4],
                     amountCollected: campaign[5],
+                    deadlineTimestamp: Number(campaign[6])*1000,
                     deadline: durationDays,
-                    isActive: durationDays >= 0,
+                    isActive: durationDays > 0,
                 });
             }
 

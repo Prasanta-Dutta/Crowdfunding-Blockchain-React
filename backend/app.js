@@ -35,11 +35,13 @@ app.use(session(
 // import aadharRoute from './routes/aadhar.route.js';
 import userRouter from './routes/user.routes.js';
 import keywordRouter from './routes/keyword.route.js';
+import campaignRouter from './routes/campaign.route.js';
 
 
 // app.use("/api/aadhar", aadharRoute);
 app.use("/api/user", userRouter);
 app.use("/api/keyword", keywordRouter);
+app.use("/api/campaign", campaignRouter);
 
 
 export default app;

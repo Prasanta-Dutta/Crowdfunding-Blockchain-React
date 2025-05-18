@@ -10,21 +10,25 @@ const Profile = ({ username = "Profile" }) => {
 
     const handleLogout = () => {
         navigatePage("/logout"); 
+        setIsOpen(!isOpen);
         return;
     };
 
     const handleMyCampaign = () => {
         navigatePage("/my-campaign"); 
+        setIsOpen(!isOpen);
         return;
     }
 
     const handleMyDonation = () => {
         navigatePage("/my-donation"); 
+        setIsOpen(!isOpen);
         return;
     }
 
     const handleProfile = () => {
         navigatePage("/edit-profile"); 
+        setIsOpen(!isOpen);
         return;
     }
 

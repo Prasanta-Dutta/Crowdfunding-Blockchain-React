@@ -6,7 +6,18 @@ import LogInContext from './context/LogInContext';
 import axios from 'axios';
 
 import { NavBar, Footer, Hero, Card, CheckSession } from './components/index';
-import { ExploreCampaigns, StartCampaign, News, Story, SignUp, SignIn, Verification, CreateCampaign } from './pages/index';
+import { 
+  ExploreCampaigns, 
+  StartCampaign, 
+  News, 
+  Story, 
+  SignUp, 
+  SignIn, 
+  Verification, 
+  CreateCampaign, 
+  MyCampaigns, 
+  MyDonation
+} from './pages/index';
 import Logout from './pages/Logout';
 
 axios.defaults.withCredentials = true;
@@ -36,6 +47,8 @@ function App() {
           <Route path="/explore-campaigns" element={<ExploreCampaigns />} />
           <Route path="/start-campaign" element={ !isLoggedIn ? <Navigate to={"/signin"} /> : !isVerified ? <Navigate to="/verification" /> : <CreateCampaign /> } />
           <Route path="/story" element={<Story />} />
+          <Route path="/my-campaign" element={isLoggedIn ? <MyCampaigns /> : <Navigate to={"/signin"} />} />
+          <Route path="/my-donation" element={isLoggedIn ? <MyDonation /> : <Navigate to={"/signin"} />} />
           <Route path="/signup" element={!isLoggedIn ? <SignUp /> : <Navigate to={"/"} />} />
           <Route path="/signin" element={!isLoggedIn ? <SignIn /> : <Navigate to={"/"} />} /> {/*Bcs of this after login go to "/"*/}
           <Route path="/verification" element={isLoggedIn ? <Verification /> : <Navigate to={"/signin"} />} />

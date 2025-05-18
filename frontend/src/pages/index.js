@@ -6,6 +6,8 @@ import SignUp from './SignUp';
 import SignIn from './SignIn';
 import Verification from './Verification';
 import CreateCampaign from './CreateCampaign';
+import MyCampaigns from './MyCampaign';
+import MyDonation from './MyDonation';
 
 export { 
     ExploreCampaigns, 
@@ -15,5 +17,7 @@ export {
     SignUp,
     SignIn,
     Verification,
-    CreateCampaign
+    CreateCampaign,
+    MyCampaigns,
+    MyDonation
 };

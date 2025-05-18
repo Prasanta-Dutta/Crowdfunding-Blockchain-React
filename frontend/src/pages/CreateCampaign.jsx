@@ -178,7 +178,7 @@ const CreateCampaign = () => {
                 <button
                   key={type}
                   onClick={() => handleCampaignTypeSelect(type)}
-                  className="p-4 bg-emerald-200 hover:bg-emerald-400 rounded-lg text-white font-semibold"
+                  className="p-4 bg-emerald-400 hover:bg-emerald-600 rounded-lg text-white font-semibold"
                 >
                   {type}
                 </button>

@@ -45,4 +45,35 @@ const saveDonateDetails = async (req, res) => {
     }
 };
 
-export { saveCampaignDetails, saveDonateDetails };
+const fetchCampaignDetails = async (req, res) => {
+    try {
+        const campaigns = await Campaign.find({createdBy: req.session.userId});
+
+        if(campaigns && campaigns.length > 0){
+            return res.status(200).json({ message: "Campaign Fetched", campaigns });
+        }
+    } catch (error) {
+        console.error("Error fetching campaign:", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+}
+
+const fetchDonationDetails = async (req, res) => {
+    try {
+        const campaigns = await Donate.find({createdBy: req.session.userId});
+
+        if(campaigns && campaigns.length > 0){
+            return res.status(200).json({ message: "Campaign Fetched", campaigns });
+        }
+    } catch (error) {
+        console.error("Error fetching campaign:", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+}
+
+export { 
+    saveCampaignDetails, 
+    saveDonateDetails, 
+    fetchCampaignDetails, 
+    fetchDonationDetails 
+};
